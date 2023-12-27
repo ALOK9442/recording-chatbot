@@ -101,7 +101,7 @@ const ChatPage = () => {
                     <button className={`bg-amber-500 p-2 rounded-md ${isRecording ? 'bg-red-500' : ''}`} onClick={toggleRecording}>
                         {isRecording ? <FontAwesomeIcon icon={faStop} /> : <FontAwesomeIcon icon={faMicrophone} />}
                     </button>
-                    <button className="bg-blue-500 text-white p-2 rounded-md">
+                    <button className="bg-blue-500 text-white p-2 rounded-md" onClick={handleMessage}>
                         <FontAwesomeIcon icon={faPaperPlane} />
                     </button>
                 </div>
