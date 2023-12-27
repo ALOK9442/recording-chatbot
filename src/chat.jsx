@@ -1,3 +1,5 @@
+import { faMicrophone, faMicrophoneAltSlash, faPaperPlane, faStop } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useRef, useEffect } from 'react';
 
 const ChatPage = () => {
@@ -42,6 +44,15 @@ const ChatPage = () => {
         }
     };
 
+    const toggleRecording = () => {
+        if (!isRecording) {
+            startRecording();
+        } else {
+            stopRecording();
+        }
+    };
+
+
     useEffect(() => {
         if (audioData.length > 0) {
             const latestAudio = audioData[audioData.length - 1];
@@ -52,31 +63,32 @@ const ChatPage = () => {
     }, [audioData]);
 
     return (
-        <div className="container mx-auto mt-8 p-4">
+        <div className="container mx-auto mt-8 p-4 flex flex-col items-center">
             <h1 className="text-3xl font-bold mb-4">Voice Note Chatbot</h1>
-            <div className="h-96 overflow-y-scroll border border-gray-300 p-4">
-                {audioData.map((audio, index) => (
-                    <div key={index} className={`mb-2 ${audio.isUser ? 'text-right' : 'text-left'}`}>
-                        <audio controls src={audio.url} className=''/>
+            <div className="h-96 overflow-y-scroll border border-gray-300 p-4 w-80">
+                <div>
+                    {audioData.map((audio, index) => (
+                        <div key={index} className={`mb-2 ${audio.isUser ? 'text-right' : 'text-left'}`}>
+                            <audio controls src={audio.url} className='w-40' />
+                        </div>
+                    ))}
+                </div>
+                <div className="flex items-center mt-48">
+                    <input
+                        type="text"
+                        value={inputText}
+                        onChange={(e) => setInputText(e.target.value)}
+                        placeholder="Type your message..."
+                        className="flex-1 border p-2 rounded-l-md"
+                    />
+                    <div className=''>
+                        <button className={`bg-amber-500 p-2 rounded-md ${isRecording ? 'bg-red-500' : ''}`} onClick={toggleRecording}>
+                            {isRecording ? <FontAwesomeIcon icon={faStop}/> : <FontAwesomeIcon icon={faMicrophone}/>}
+                        </button>
+                        <button className="bg-blue-500 text-white p-2 rounded-r-md">
+                            <FontAwesomeIcon icon={faPaperPlane}/>
+                        </button>
                     </div>
-                ))}
-            </div>
-            <div className="flex items-center mt-4">
-                <input
-                    type="text"
-                    value={inputText}
-                    onChange={(e) => setInputText(e.target.value)}
-                    placeholder="Type your message..."
-                    className="flex-1 border p-2 rounded-l-md"
-                />
-                <div className='space-x-6'>
-                    <button className='bg-amber-500 p-2 rounded-md' onClick={startRecording} disabled={isRecording}>
-                        {isRecording ? 'Recording...' : 'Start Recording'}
-                    </button>
-                    <button className='bg-red-500 text-white p-2 rounded-md' onClick={stopRecording} disabled={!isRecording}>
-                        Stop Recording
-                    </button>
-                    <button className="bg-blue-500 text-white p-2 rounded-r-md">Send</button>
                 </div>
             </div>
         </div>
